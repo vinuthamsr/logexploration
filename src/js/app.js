@@ -1,41 +1,6 @@
-var request = require('superagent');
+var Logger = require('./test');
 
-const levels = {
-    error: 0, 
-    warn: 1, 
-    info: 2, 
-    verbose: 3, 
-    debug: 4, 
-    silly: 5
-}
+// var logger = new Logger("debug", "my-app");
+// logger.log("error", "uksdsd", "111");
 
-class Logger {
-  constructor(logType, appName) {
-    this.logType = logType;
-    this.appName = appName;
-  }
-  
-  log = function(logType, msg, eventType, source, attributes, callback) {
-    console.log('Log this event' + this.appName);
-    console.log('default was ' + levels[this.logType]);    
-
-    if(levels[logType] <= levels[this.logType]) {
-    request
-        .post("http://localhost:8000/dslog")
-        .type('application/json')
-        .accept('json')
-        .send({
-          logType: logType,
-          msg: msg,
-          eventType: "UI_Event",
-          source: this.appName          
-        })
-        .end(function(err, res) {
-          if(err) 
-            throw err;
-        }.bind(this));
-    }
-  }
-}
-
-module.exports = Logger;
+module.exports.Logger = Logger;
