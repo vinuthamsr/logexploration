@@ -1,0 +1,32 @@
+{
+  "name": "ds-logger",
+  "version": "1.0.0",
+  "description": "Generic Logging component",
+  "main": "test.js",
+  "scripts": {
+    "clean": "[[ -d dist ]] && rm -r dist; mkdir dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-html": "cp src/html/index.html dist/index.html",
+    "build-js": "./node_modules/.bin/browserify src/js/app.js -t [ envify --NODE_ENV $NODE_ENV ] -t [ babelify --stage 0 ] -t bulkify | ./node_modules/.bin/uglifyjs -c > dist/app.js",    
+    "watch-html": "./node_modules/.bin/forever ./node_modules/.bin/nodemon --exitcrash --ext html --watch src/html --exec 'npm run build-html'",
+    "watch-js": "./node_modules/.bin/watchify src/js/app.js -v -t [ babelify --stage 0 ] -t bulkify --debug -o dist/app.js",
+    "watch": "npm run clean && npm run serve & npm run watch-html & npm run watch-js",
+    "serve": "node tools/browser-sync"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babelify": "^6.1.1",
+    "browser-sync": "^2.6.3",
+    "browserify": "^10.0.0",
+    "bulkify": "^1.1.1",
+    "envify": "^3.4.0",
+    "forever": "^0.14.1",
+    "nodemon": "^1.3.7",
+    "uglifyjs": "^2.4.10",
+    "watchify": "3.4.0"
+  },
+  "dependencies": {
+    "superagent": "^2.3.0"
+  }
+}
